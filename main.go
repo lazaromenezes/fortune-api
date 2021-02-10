@@ -7,11 +7,7 @@ import (
     "os/exec"
 )
 
-type fortuneHandler struct {
-
-}
-
-func (f fortuneHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request){
+func handleFortune(writer http.ResponseWriter, request *http.Request){
   fortune, err := exec.Command("fortune").Output()
   if err != nil {
     writer.Write([]byte(err.Error()))
@@ -24,6 +20,6 @@ func main() {
   if port == "" {
     port = "8080"
   }
-	http.Handle("/fortune", fortuneHandler{})
+  http.HandleFunc("/fortune", handleFortune)
   log.Fatal(http.ListenAndServe(":" + port, nil))
 }
