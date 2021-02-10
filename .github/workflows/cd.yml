@@ -1,0 +1,27 @@
+name: Fortune API CD
+
+on:
+  push:
+    branches:
+      - master 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+
+      - name: Setup GO
+        uses: actions/setup-go@v2
+
+      - name: Build API 
+        run: CGO_ENABLED=0 go build main.go 
+
+      - name: Build and Push Image
+        uses: akhileshns/heroku-deploy@v3.8.9
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: br-com-lazarodm-fortune-api
+          heroku_email: lazarodm@gmail.com
+          usedocker: true
