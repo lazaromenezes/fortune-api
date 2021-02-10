@@ -3,6 +3,7 @@ package main
 import (
     "log"
     "net/http"
+    "os"
     "os/exec"
 )
 
@@ -19,6 +20,10 @@ func (f fortuneHandler) ServeHTTP(writer http.ResponseWriter, request *http.Requ
 }
 
 func main() {
-		http.Handle("/fortune", fortuneHandler{})
-    log.Fatal(http.ListenAndServe(":80", nil))
+  port := os.Getenv("PORT")
+  if port == "" {
+    port = "8080"
+  }
+	http.Handle("/fortune", fortuneHandler{})
+  log.Fatal(http.ListenAndServe(":" + port, nil))
 }
