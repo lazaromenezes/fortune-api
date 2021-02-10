@@ -3,7 +3,7 @@ name: Fortune API CD
 on:
   push:
     branches:
-      - master 
+      - main 
 
 jobs:
   build:
