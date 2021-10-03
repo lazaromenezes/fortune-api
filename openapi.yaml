@@ -1,0 +1,29 @@
+swagger: "2.0"
+info:
+  title: "Fortune API"
+  description: "Returns a random Fortune"
+  version: "1.0.0"
+host: "fortune-api.appspot.com"
+schemes:
+  - "https"
+produces:
+  - text/plain
+securityDefinitions:
+  security_method: 
+    type: "apiKey"
+    name: "key"
+    in: "query"
+paths:
+  /fortune:
+    get:
+      description: "Returns a random fortune"
+      operationId: "getFortune"
+      security:
+      - security_method: ["apiKey"]
+      x-google-backend:
+        address: https://fortune-api-gldbxvucba-rj.a.run.app/fortune
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: string          

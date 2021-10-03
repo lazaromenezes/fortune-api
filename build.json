@@ -1,0 +1,13 @@
+{
+  "steps": [
+    {
+      "name": "gcr.io/cloud-builders/gke-deploy",
+      "args": [
+        "run",
+        "--filename=deploy.yaml",
+        "--location=southamerica-east1-b",
+        "--cluster=test-cluster-1"
+      ]
+    }
+  ]
+}

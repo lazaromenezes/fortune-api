@@ -1,0 +1,58 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "fortune-api"
+  namespace: "default"
+  labels:
+    app: "fortune-api"
+    version: "2"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "fortune-api"
+  template:
+    metadata:
+      labels:
+        app: "fortune-api"
+    spec:
+      containers:
+      - name: "fortune-api"
+        image: "gcr.io/manjei-website/fortune-api"
+        imagePullPolicy: "Always"
+      - name: endpoints
+        #resources:
+          #limits:
+          #  cpu: CPU_LIMIT
+          #requests:
+          #  cpu: CPU_REQUESTS
+        image: gcr.io/endpoints-release/endpoints-runtime:1.32.0
+        args:
+        - --http_port=9876
+        - --backend=127.0.0.1:80
+        - --service=fortune-api.endpoints.manjei-website.cloud.goog
+        - --rollout_strategy=managed
+        - --cors_preset=basic
+        - -z=healthz
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 9876
+        ports:
+        - containerPort: 9876
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "fortune-api"
+  namespace: "default"
+  labels:
+    app: "fortune-api"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 80
+  selector:
+    app: "fortune-api"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
