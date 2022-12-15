@@ -18,7 +18,7 @@ func handleFortune(writer http.ResponseWriter, request *http.Request){
 func main() {
   port := os.Getenv("PORT")
   if port == "" {
-    port = "8080"
+    port = "80"
   }
   http.HandleFunc("/fortune", handleFortune)
   log.Fatal(http.ListenAndServe(":" + port, nil))
